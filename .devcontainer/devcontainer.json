@@ -1,0 +1,19 @@
+{
+  "name": "HashiCorp Vault Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "forwardPorts": [8200],
+  "portsAttributes": {
+    "8200": {
+      "label": "Vault UI",
+      "onAutoForward": "notify"
+    }
+  },
+  "postStartCommand": "bash .devcontainer/start-vault.sh",
+  "remoteEnv": {
+    "VAULT_ADDR": "http://127.0.0.1:8200",
+    "VAULT_TOKEN": "root"
+  }
+}
