@@ -29,12 +29,22 @@ A ready-to-run HashiCorp Vault development environment using GitHub Codespaces, 
 
 | Method       | Value                                              |
 |--------------|----------------------------------------------------|
-| Root Token   | Dynamic — printed in terminal on startup           |
+| Root Token   | Dynamic — run `bash get-token.sh` to retrieve      |
 | Username     | `demo`                                             |
 | Password     | `demo1234`                                         |
-| Vault URL    | `http://localhost:8200`                            |
+| Vault URL    | `http://localhost:8200/ui`                         |
 
-> ⚠️ The root token is generated at first init and stored in `/workspaces/vault-data/.vault-init`. Check your terminal output on startup to see it.
+The root token is generated at first init and stored in `/workspaces/vault-data/.vault-init`. To retrieve it at any time:
+
+```bash
+# Quick helper script
+bash get-token.sh
+
+# Or directly
+cat /workspaces/vault-data/.vault-init | jq -r '.root_token'
+```
+
+> **Tip:** You can also log into the UI using the **Username** method with `demo` / `demo1234` — no token needed.
 
 ---
 
@@ -92,7 +102,16 @@ curl -s http://127.0.0.1:8200/v1/secret/data/demo/myapp \
 
 ---
 
-## Adding More Users
+## Ports
+
+| Port | Purpose | Required |
+|------|---------|----------|
+| `8200` | Vault API and UI | Yes — forward this in Codespaces |
+| `8201` | Vault cluster communication (HA/Raft replication) | No — only needed for multi-node clusters |
+
+Port 8201 is Vault's internal cluster port used for request forwarding and Raft replication between nodes in a High Availability setup. Since this environment runs a single Vault node, port 8201 is not used and does not need to be forwarded.
+
+
 
 ```bash
 vault write auth/userpass/users/newuser \

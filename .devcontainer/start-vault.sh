@@ -63,6 +63,20 @@ if ! vault auth list 2>/dev/null | grep -q "userpass"; then
   echo "Bootstrap complete."
 fi
 
+# ── Print credentials clearly ────────────────────────────────────────────────
+echo ""
+echo "╔══════════════════════════════════════════════╗"
+echo "║           VAULT CREDENTIALS                  ║"
+echo "╠══════════════════════════════════════════════╣"
+echo "║  Root Token : $ROOT_TOKEN"
+echo "║  Userpass   : demo / demo1234                ║"
+echo "║  UI URL     : http://localhost:8200/ui        ║"
+echo "╚══════════════════════════════════════════════╝"
+echo ""
+echo "  To retrieve the token later, run:"
+echo "  cat /workspaces/vault-data/.vault-init | jq -r '.root_token'"
+echo ""
+
 # ── Write VAULT_TOKEN to shell profile so terminals pick it up ───────────────
 grep -q "VAULT_ADDR" "$HOME/.bashrc" 2>/dev/null || \
   echo "export VAULT_ADDR='http://127.0.0.1:8200'" >> "$HOME/.bashrc"
