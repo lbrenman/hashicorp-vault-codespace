@@ -1,5 +1,12 @@
-# Vault data and config
+# Vault persistent data - NEVER commit
 vault-data/
+/workspaces/vault-data/
+
+# Vault init file - contains unseal key and root token - NEVER commit
+.vault-init
+*.vault-init
+
+# Vault logs and PIDs
 vault.log
 *.pid
 

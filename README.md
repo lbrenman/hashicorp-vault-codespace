@@ -2,13 +2,17 @@
 
 A ready-to-run HashiCorp Vault development environment using GitHub Codespaces, with userpass authentication enabled out of the box.
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/lbrenman/hashicorp-vault-codespace)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME)
+
+> **Note:** Replace `YOUR_GITHUB_USERNAME` and `YOUR_REPO_NAME` in the badge URL above with your actual GitHub username and repository name.
 
 ---
 
 ## What's Included
 
-- HashiCorp Vault running in **dev mode** on port `8200`
+- HashiCorp Vault running with **persistent file storage** on port `8200`
+- Secrets survive Codespace stop/start — stored in `/workspaces/vault-data/` (persisted by Codespaces)
+- Auto-unseal on every restart using the stored init file
 - **Userpass auth** pre-configured with a demo user
 - A sample **policy** scoped to `secret/data/demo/*`
 - Vault UI accessible via forwarded port
@@ -25,14 +29,14 @@ A ready-to-run HashiCorp Vault development environment using GitHub Codespaces, 
 
 ## Credentials
 
-| Method       | Value              |
-|--------------|--------------------|
-| Root Token   | `root`             |
-| Username     | `demo`             |
-| Password     | `demo1234`         |
-| Vault URL    | `http://localhost:8200` |
+| Method       | Value                                              |
+|--------------|----------------------------------------------------|
+| Root Token   | Dynamic — printed in terminal on startup           |
+| Username     | `demo`                                             |
+| Password     | `demo1234`                                         |
+| Vault URL    | `http://localhost:8200`                            |
 
-> ⚠️ These are dev-mode credentials only. Never use these in production.
+> ⚠️ The root token is generated at first init and stored in `/workspaces/vault-data/.vault-init`. Check your terminal output on startup to see it.
 
 ---
 
@@ -108,8 +112,21 @@ vault policy write my-policy policies/my-policy.hcl
 
 ---
 
+## Persistence
+
+Vault data is stored in `/workspaces/vault-data/`, which GitHub Codespaces persists across stop/start cycles. On every restart, the startup script:
+
+1. Starts the Vault server with the file storage config
+2. Reads the unseal key from `/workspaces/vault-data/.vault-init`
+3. Automatically unseals Vault
+4. Skips bootstrapping (userpass/policies already exist)
+
+The `.vault-init` file contains the unseal key and root token. It is excluded from git via `.gitignore` — **never commit it.**
+
+> ⚠️ If you delete the Codespace entirely, `vault-data/` is lost and you'll need to reinitialize from scratch.
+
 ## Notes
 
-- Vault runs in **dev mode** — all data is in-memory and lost when the Codespace stops
-- The root token should only be used for initial setup; use userpass + client tokens for everything else
-- To persist secrets across restarts, consider integrating an external storage backend (PostgreSQL, Consul, etc.)
+- The root token is dynamically generated at init time and written to your terminal by the startup script
+- The root token should only be used for initial setup; use userpass + client tokens for day-to-day access
+- `jq` is required by the startup script and is pre-installed in the base Codespace image
