@@ -4,8 +4,6 @@ A ready-to-run HashiCorp Vault development environment using GitHub Codespaces, 
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME)
 
-> **Note:** Replace `YOUR_GITHUB_USERNAME` and `YOUR_REPO_NAME` in the badge URL above with your actual GitHub username and repository name.
-
 ---
 
 ## What's Included
