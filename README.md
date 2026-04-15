@@ -2,7 +2,7 @@
 
 A ready-to-run HashiCorp Vault development environment using GitHub Codespaces, with userpass authentication enabled out of the box.
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/lbrenman/hashicorp-vault-codespace)
 
 ---
 
