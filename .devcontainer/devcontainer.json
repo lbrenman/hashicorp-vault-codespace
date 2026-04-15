@@ -8,7 +8,8 @@
   "portsAttributes": {
     "8200": {
       "label": "Vault UI",
-      "onAutoForward": "notify"
+      "onAutoForward": "notify",
+      "visibility": "public"
     }
   },
   "postStartCommand": "bash .devcontainer/start-vault.sh",

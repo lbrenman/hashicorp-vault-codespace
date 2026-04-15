@@ -22,6 +22,11 @@ fi
 
 # ── Start Vault server ───────────────────────────────────────────────────────
 mkdir -p "$DATA_DIR"
+
+# Remove IPC_LOCK capability — Codespaces blocks it
+sudo setcap cap_ipc_lock=-ep $(which vault) 2>/dev/null || true
+export VAULT_DISABLE_MLOCK=true
+
 echo "Starting Vault server (file storage)..."
 vault server -config="$CONFIG" > /tmp/vault.log 2>&1 &
 sleep 3
